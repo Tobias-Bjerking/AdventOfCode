@@ -19,6 +19,6 @@ public class Utils {
     }
 
     public static void stop() {
-        print("Time: " + String.valueOf(LocalDateTime.now().getNano() - time % 1000) + " ms\n");
+        print("Time: " + String.valueOf((LocalDateTime.now().getNano() - time) / 1000) + " µs\n");
     }
 }
