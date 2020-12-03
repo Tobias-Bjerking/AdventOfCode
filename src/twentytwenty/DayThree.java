@@ -34,7 +34,7 @@ public class DayThree {
     }
 
     public static void main(String[] args) {
-        char[][] map = readAsCharMatrix("src\\twentytwenty\\DayThree.txt");
+        char[][] map = readAsCharMatrix("src\\twentytwenty\\input\\DayThree.txt");
 
         print(partOne(map, new Position(3, 1)));
         print(partTwo(map));

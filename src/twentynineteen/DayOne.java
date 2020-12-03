@@ -32,7 +32,7 @@ public class DayOne {
     }
 
     public static void main(String[] args) {
-        List<Integer> input = readAsIntList("src\\twentynineteen\\DayOne.txt");
+        List<Integer> input = readAsIntList("src\\twentynineteen\\input\\DayOne.txt");
         print(partOne(input));
         print(partTwo(input));
 

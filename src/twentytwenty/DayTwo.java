@@ -40,7 +40,7 @@ public class DayTwo {
 
 
     public static void main(String[] args) {
-        List<String> strings = readAsList("src\\twentytwenty\\DayTwo.txt");
+        List<String> strings = readAsList("src\\twentytwenty\\input\\DayTwo.txt");
         List<Policy> input = new ArrayList<>(strings.size());
         for(String line : strings)
             input.add(Policy.parse(line));

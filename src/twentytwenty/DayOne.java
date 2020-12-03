@@ -25,7 +25,7 @@ public class DayOne {
     }
 
     public static void main(String[] args) {
-        List<Integer> input = readAsIntList("src\\twentytwenty\\DayOne.txt");
+        List<Integer> input = readAsIntList("src\\twentytwenty\\input\\DayOne.txt");
         print(partOne(input));
         print(partTwo(input));
     }
