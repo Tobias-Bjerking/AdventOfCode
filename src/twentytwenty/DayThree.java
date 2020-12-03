@@ -1,28 +1,33 @@
 package twentytwenty;
 
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 import static shared.Input.readAsList;
-import static shared.Utils.print;
+import static shared.Utils.*;
 
 public class DayThree {
-    static Position position = new Position();
 
-    private static int partOne(String[][] map, int x, int y) {
-        position.reset();
+    private static int partOne(String[][] map, Position direction) {
+    Position position = new Position(0, 0);
         int trees = 0;
-
         while (position.getY() < map[0].length)
-            if (travel(map ,x, y))
+            if (travel(map, position, direction.getX(), direction.getY()))
                 trees++;
         return trees;
     }
 
-    private static int partTwo() {
-        return -1;
+    private static String partTwo(String[][] map) {
+        List<Position> directions = Arrays.asList(new Position(1, 1), new Position(3, 1), new Position(5, 1), new Position(7, 1), new Position(1, 2));
+        return directions.stream()
+                .map(dir -> new BigInteger(String.valueOf(partOne(map, dir))))
+                .reduce(BigInteger::multiply)
+                .orElseThrow(NullPointerException::new)
+                .toString();
     }
 
-    private static boolean travel(String[][] map, int x, int y) {
+    private static boolean travel(String[][] map, Position position, int x, int y) {
         position.setX((position.getX() + x) % map.length);
         position.setY(position.getY() + y);
         return position.getY() < map[0].length && map[position.getX()][position.getY()].equals("#");
@@ -42,15 +47,18 @@ public class DayThree {
         List<String> strings = readAsList("src\\twentytwenty\\DayThree.txt");
         String[][] map = createMap(strings);
 
-        print(partOne(map, 3, 1));
-//        print(partTwo(input));
+        print(partOne(map, new Position(3, 1)));
+        print(partTwo(map));
     }
 
     static class Position {
         private int x;
         private int y;
 
-        public Position() {}
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
         public int getX() {
             return x;
@@ -58,11 +66,6 @@ public class DayThree {
 
         public void setX(int x) {
             this.x = x;
-        }
-
-        public void reset() {
-            this.x = 0;
-            this.y = 0;
         }
 
         public int getY() {
