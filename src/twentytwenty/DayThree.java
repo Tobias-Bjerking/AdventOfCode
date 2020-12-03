@@ -4,12 +4,12 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
-import static shared.Input.readAsList;
+import static shared.Input.readAsCharMatrix;
 import static shared.Utils.*;
 
 public class DayThree {
 
-    private static int partOne(String[][] map, Position direction) {
+    private static int partOne(char[][] map, Position direction) {
     Position position = new Position(0, 0);
         int trees = 0;
         while (position.getY() < map[0].length)
@@ -18,7 +18,7 @@ public class DayThree {
         return trees;
     }
 
-    private static String partTwo(String[][] map) {
+    private static String partTwo(char[][] map) {
         List<Position> directions = Arrays.asList(new Position(1, 1), new Position(3, 1), new Position(5, 1), new Position(7, 1), new Position(1, 2));
         return directions.stream()
                 .map(dir -> new BigInteger(String.valueOf(partOne(map, dir))))
@@ -27,25 +27,14 @@ public class DayThree {
                 .toString();
     }
 
-    private static boolean travel(String[][] map, Position position, int x, int y) {
+    private static boolean travel(char[][] map, Position position, int x, int y) {
         position.setX((position.getX() + x) % map.length);
         position.setY(position.getY() + y);
-        return position.getY() < map[0].length && map[position.getX()][position.getY()].equals("#");
-    }
-
-    private static String[][] createMap(List<String> strings) {
-        int width = strings.get(0).length();
-        int height = strings.size();
-        String[][] map = new String[width][height];
-        for (int w = 0; w < width; w++)
-            for (int h = 0; h < height; h++)
-                map[w][h] = String.valueOf(strings.get(h).charAt(w));
-        return map;
+        return position.getY() < map[0].length && map[position.getX()][position.getY()] == '#';
     }
 
     public static void main(String[] args) {
-        List<String> strings = readAsList("src\\twentytwenty\\DayThree.txt");
-        String[][] map = createMap(strings);
+        char[][] map = readAsCharMatrix("src\\twentytwenty\\DayThree.txt");
 
         print(partOne(map, new Position(3, 1)));
         print(partTwo(map));

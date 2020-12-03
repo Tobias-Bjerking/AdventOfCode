@@ -57,4 +57,17 @@ public class Input {
         return list;
     }
 
+    public static char[][] readAsCharMatrix(String path) {
+        List<String> list = readAsList(path);
+
+        char[][] matrix = new char[list.get(0).length()][list.size()];
+        for (int y = 0; y < list.size(); y++){
+            for (int x = 0; x < list.get(0).length(); x++){
+                matrix[x][y] = list.get(y).charAt(x);
+            }
+        }
+
+        return matrix;
+    }
+
 }
