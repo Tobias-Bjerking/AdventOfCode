@@ -17,9 +17,7 @@ public class Input {
                 line = reader.readLine();
             }
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
         return raw;
     }
 
@@ -34,10 +32,23 @@ public class Input {
                 line = reader.readLine();
             }
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
         return list;
+    }
+
+    public static List<String> readAsLineSeperatedList(String path) {
+        List<String> strings = readAsList(path);
+        List<String> newList = new ArrayList<>();
+        String temp = "";
+        for (String s : strings) {
+            if (s.equals("")) {
+                newList.add(temp);
+                temp = "";
+            } else
+                temp = temp.concat(" ").concat(s);
+        }
+        newList.add(temp);
+        return newList;
     }
 
     public static List<Integer> readAsIntList(String path) {
@@ -51,23 +62,17 @@ public class Input {
                 line = reader.readLine();
             }
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
         return list;
     }
 
     public static char[][] readAsCharMatrix(String path) {
         List<String> list = readAsList(path);
-
         char[][] matrix = new char[list.get(0).length()][list.size()];
-        for (int y = 0; y < list.size(); y++){
-            for (int x = 0; x < list.get(0).length(); x++){
-                matrix[x][y] = list.get(y).charAt(x);
-            }
-        }
 
+        for (int y = 0; y < list.size(); y++)
+            for (int x = 0; x < list.get(0).length(); x++)
+                matrix[x][y] = list.get(y).charAt(x);
         return matrix;
     }
-
 }
