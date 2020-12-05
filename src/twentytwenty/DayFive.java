@@ -32,15 +32,14 @@ public class DayFive {
         }
 
         List<Seat> incompleteRow = null;
-        for (ArrayList<Seat> row : rows.values()) {
+        for (ArrayList<Seat> row : rows.values())
             if (row.size() == 7)
                 incompleteRow = row;
-        }
 
+        assert incompleteRow != null;
         int total = (incompleteRow.size() + 1) * (incompleteRow.size() + 2) / 2;
-        for (int i = 0; i < incompleteRow.size(); i++) {
-            total -= incompleteRow.get(i).getColumn() + 1;
-        }
+        for (Seat seat : incompleteRow)
+            total -= seat.getColumn() + 1;
 
         return calculateID(new Seat(incompleteRow.get(0).getRow(), total - 1));
     }
