@@ -10,6 +10,7 @@ import static twentynineteen.IntCodeComputer.Operation.*;
 
 public class IntCodeComputer {
 
+
     enum Operation {ADD, MUL, EXIT}
     static HashMap<Integer, Operation> operations = new HashMap<>();
 
@@ -36,6 +37,12 @@ public class IntCodeComputer {
     }
 
     public void run() {
+        while (execute());
+    }
+
+    public void run(int noun, int verb) {
+        memory.set(1, noun);
+        memory.set(2, verb);
         while (execute());
     }
 
