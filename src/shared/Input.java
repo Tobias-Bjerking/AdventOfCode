@@ -76,6 +76,23 @@ public class Input {
         return matrix;
     }
 
+    public static List<String> readAsCSV(String path) {
+        List<String> list = new ArrayList<>();
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+            String line = reader.readLine();
+            while (line != null) {
+                String[] split = line.split(",");
+                for (String s : split)
+                    list.add(s);
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) { e.printStackTrace(); }
+        return list;
+    }
+
     public static List<Integer> readAsCSVInt(String path) {
         List<Integer> list = new ArrayList<>();
         BufferedReader reader;
