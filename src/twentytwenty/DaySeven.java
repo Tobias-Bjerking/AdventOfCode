@@ -9,55 +9,44 @@ public class DaySeven {
 
     static Map<String, Bag> rules = new HashMap<>();
 
-    private static boolean getContainedBags(String bag, String target) {
-        if (bag.equals(target))
-            return true;
-        if (!rules.containsKey(bag) || rules.get(bag).isEmpty())
-            return false;
-        Map<String, Integer> contains = rules.get(bag).getContains();
-        for (String b: contains.keySet())
-            if (getContainedBags(b, target))
-                return true;
-        return false;
-    }
-
-    private static int getNumberOfBags(String bag) {
-        if (!rules.containsKey(bag) || rules.get(bag).isEmpty())
-            return 0;
-
-        int total = 0;
-        Map<String, Integer> contains = rules.get(bag).getContains();
-        for (String b: contains.keySet())
-            for (int i = 0; i < contains.get(b); i++)
-                total += getNumberOfBags(b) + 1;
-        return total;
-    }
-
     private static int partOne() {
         return (int) rules.keySet().stream()
-                .filter(bag -> getContainedBags(bag, "shiny gold bag"))
+                .filter(bag -> bagContainsTarget(bag, "shiny gold bag"))
                 .count() - 1;
     }
 
     private static int partTwo() {
-        return getNumberOfBags("shiny gold bag");
+        return getNumberOfBagsInside(rules.get("shiny gold bag"));
+    }
+
+    private static boolean bagContainsTarget(String bag, String target) {
+        if (bag.equals(target))
+            return true;
+        if (rules.get(bag).isEmpty())
+            return false;
+        return rules.get(bag).getContains().keySet().stream()
+                .anyMatch(b -> bagContainsTarget(b, target));
+    }
+
+    private static int getNumberOfBagsInside(Bag bag) {
+        return bag.getContains().keySet().stream()
+                .map(b -> (getNumberOfBagsInside(rules.get(b)) + 1) * bag.getContains().get(b))
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     private static void parse(String rule) {
-        String[] split = rule.split(" contain ");
-        String bagName = split[0].replace("bags", "bag");
+        String[] strings = rule.split(" contain ");
+        String bagName = strings[0].replace("bags", "bag");
         rules.put(bagName, new Bag(bagName));
-        if (!split[1].equals("no other bags.")) {
-            String[] bags = split[1].split(", ");
-            for (String bag : bags)
-                rules.get(bagName).addBag(bag.replace("bags", "bag"));
-        }
+        if (!strings[1].equals("no other bags."))
+            Arrays.stream(strings[1].split(", "))
+                    .forEach(bag -> rules.get(bagName).addBag(bag.replace("bags", "bag")));
     }
 
     public static void main(String[] args) {
         List<String> input = readAsList("src\\twentytwenty\\input\\DaySeven.txt");
-        for (String line : input)
-            parse(line);
+        input.forEach(DaySeven::parse);
         print(partOne());
         print(partTwo());
     }
