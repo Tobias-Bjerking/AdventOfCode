@@ -1,8 +1,6 @@
 package twentytwenty;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static shared.Input.readAsList;
 import static shared.Utils.print;
@@ -12,34 +10,30 @@ public class DayFive {
     private static int calculateID(Seat seat) { return seat.getRow() * 8 + seat.getColumn(); }
 
     private static int partOne(List<String> input){
-        int highestID = -1;
-        for (String s : input) {
-            Seat seat = parse(s);
-            int id = calculateID(seat);
-            if (id > highestID)
-                highestID = id;
-        }
-        return highestID;
+        return input.stream()
+                .map(DayFive::parse)
+                .map(DayFive::calculateID)
+                .reduce(Math::max)
+                .get();
     }
 
     private static int partTwo(List<String> input){
         HashMap<Integer, ArrayList<Seat>> rows = new HashMap<>();
 
-        for (String s : input) {
-            Seat seat = parse(s);
-            List<Seat> row = rows.computeIfAbsent(seat.getRow(), k -> new ArrayList<>());
-            row.add(seat);
-        }
+        input.stream()
+                .map(DayFive::parse)
+                .forEach(s -> rows.computeIfAbsent(s.getRow(), k -> new ArrayList<>()).add(s));
 
-        List<Seat> incompleteRow = null;
-        for (ArrayList<Seat> row : rows.values())
-            if (row.size() == 7)
-                incompleteRow = row;
+        ArrayList<Seat> incompleteRow = rows.values().stream()
+                .filter(row -> row.size() == 7)
+                .findAny()
+                .orElseThrow(NullPointerException::new);
 
-        assert incompleteRow != null;
         int total = (incompleteRow.size() + 1) * (incompleteRow.size() + 2) / 2;
-        for (Seat seat : incompleteRow)
-            total -= seat.getColumn() + 1;
+        total -= incompleteRow.stream()
+                .map(seat -> seat.getColumn() + 1)
+                .reduce(Integer::sum)
+                .get();
 
         return calculateID(new Seat(incompleteRow.get(0).getRow(), total - 1));
     }
@@ -49,9 +43,8 @@ public class DayFive {
         int column = 0;
         for(int i = 0; i < boardingCode.length(); i++) {
             char c = boardingCode.charAt(boardingCode.length()-i-1);
-            if (c == 'B' || c == 'F') {
+            if (c == 'B' || c == 'F')
                 row += c == 'B' ? Math.pow(2, i-3)  : 0;
-            }
             else
                 column += c == 'R' ? Math.pow(2, i) : 0;
         }
