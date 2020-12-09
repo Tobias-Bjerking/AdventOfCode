@@ -66,6 +66,21 @@ public class Input {
         return list;
     }
 
+    public static List<Long> readAsLongList(String path) {
+        List<Long> list = new ArrayList<>();
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+            String line = reader.readLine();
+            while (line != null) {
+                list.add(Long.parseLong(line));
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e) { e.printStackTrace(); }
+        return list;
+    }
+
     public static char[][] readAsCharMatrix(String path) {
         List<String> list = readAsList(path);
         char[][] matrix = new char[list.get(0).length()][list.size()];
