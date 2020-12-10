@@ -14,6 +14,10 @@ public class Utils {
         System.out.println(s);
     }
 
+    public static void print(long s) {
+        System.out.println(s);
+    }
+
     public static void start() {
         time = LocalDateTime.now().getNano();
     }
