@@ -9,7 +9,7 @@ import static shared.Utils.print;
 public class DayTwo {
 
     private static boolean countPartOne(Policy policy) {
-        long count = policy.getPassword().chars().asDoubleStream()
+        long count = policy.getPassword().chars()
                 .filter(c -> c == policy.getLetter())
                 .count();
         return policy.getMin() <= count && count <= policy.getMax();

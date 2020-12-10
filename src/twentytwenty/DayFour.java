@@ -1,6 +1,7 @@
 package twentytwenty;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static shared.Input.*;
 import static shared.Utils.*;
@@ -20,9 +21,10 @@ public class DayFour {
     }
 
     public static void main(String[] args) {
-        List<String> strings = readAsLineSeperatedList("src\\twentytwenty\\input\\DayFour.txt");
-        List<Passport> passports = new ArrayList<>();
-        strings.forEach(line -> passports.add(Passport.parse(line)));
+        List<Passport> passports = readAsLineSeperatedList("src\\twentytwenty\\input\\DayFour.txt")
+                .parallelStream()
+                .map(Passport::parse)
+                .collect(Collectors.toList());
         print(partOne(passports));
         print(partTwo(passports));
     }
